@@ -150,7 +150,8 @@ if(!function_exists("sfsCheck"))
 		$save = "USERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip']."\n".$data;
 		$save .= "\n\n";
 		
-		@file_put_contents($path, $save, FILE_APPEND | LOCK_EX);	
+		@file_put_contents($path, $save, FILE_APPEND | LOCK_EX);
+		@chmod($path,0640);	
 	}
 	
 }
