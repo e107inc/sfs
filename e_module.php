@@ -147,7 +147,8 @@ if(!function_exists("sfsCheck"))
 		
 		$path = (defined("e_LOG")) ? e_LOG."sfs.log" : e_PLUGIN."sfs/sfs.log";	
 		
-		$save = "USERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip']."\n".$data;
+		$save = date('r')."\nUSERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip'];
+		$save .= "\n".$data;
 		$save .= "\n\n";
 		
 		@file_put_contents($path, $save, FILE_APPEND | LOCK_EX);
