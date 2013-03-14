@@ -13,6 +13,7 @@ if(is_object($e_event))
 //$vals = array('ip'=>"70.32.38.83");
 // var_dump(sfsCheck($vals));
 
+
 if(!function_exists("sfsCheck"))
 {
 	/**
@@ -21,11 +22,21 @@ if(!function_exists("sfsCheck"))
 	 */
 	function sfsCheck($val=array())
 	{
+		
+		global $pref; 
+		
+		if($pref['sfs_enabled'] == 1)
+		{
+			return false; 	
+		}
+		
 		$error 			= false;
 	
 		$user_email 	= trim(varset($val['email']));
 		$user_ip 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
 		$user_name 		= trim(varset($val['loginname']));	 
+		
+		$deniedMessage = "Sorry no bots allowed!";
 
 		if(!is_object("parseXml"))
 		{
@@ -45,7 +56,7 @@ if(!function_exists("sfsCheck"))
 		 	{
 				case 'yes':
 					sfsLog($data);
-					return true;  // Is a BOT. 
+					return $deniedMessage;  // Is a BOT. 
 				break;
 
 				case 'no': 
@@ -70,7 +81,7 @@ if(!function_exists("sfsCheck"))
 		 	{
 				case 'yes': 
 					sfsLog($data);
-					return true; 	   // Is a BOT. 
+					return $deniedMessage; 	   // Is a BOT. 
 				break;
 
 				case 'no': 
@@ -95,7 +106,7 @@ if(!function_exists("sfsCheck"))
 		 		{
 					case 'yes': 
 						sfsLog($data);
-						return true; 	   // Is a BOT. 
+						return $deniedMessage; 	   // Is a BOT. 
 					break;
 
 					case 'no': 
