@@ -34,15 +34,14 @@ if(!function_exists("sfsCheck"))
 		
 		global $pref; 
 		
-		if($pref['sfs_enabled'] == 1)
+		if($pref['sfs_enabled'] != 1)
 		{
 			return false; 	
 		}
 		
-		$error 			= false;
 	
 		$user_email 	= trim(varset($val['email']));
-		$user_ip 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
+		$val['ip'] 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
 		$user_name 		= trim(varset($val['loginname']));	 
 		
 		$deniedMessage = "Sorry no bots allowed!";
@@ -55,25 +54,26 @@ if(!function_exists("sfsCheck"))
 		$xml = new parseXml;
 			
 		// Check IP
-		if ($user_ip != "")
+		if ($val['ip']  != "")
 		{
-			$xml->setUrl("http://www.stopforumspam.com/api?ip=" . urlencode($user_ip));
+			$xml->setUrl("http://www.stopforumspam.com/api?ip=" . urlencode($val['ip'] ));
 			$data = $xml->getRemoteXmlFile();
 			$xm = new SimpleXMLElement($data);
 
 			switch ($xm->appears) 
 		 	{
 				case 'yes':
-					sfsLog($data);
+					sfsLog($data, $val);
 					return $deniedMessage;  // Is a BOT. 
 				break;
 
 				case 'no': 
+					sfsLog($data, $val , false);
 					return false;  
 				break;
 					
 				default:
-					sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_ip);
+					sfsLog(date('r')." : Couldn't check stopforumspam.com against ". $val['ip'] , $val);
 					return false;  
 				break;
 			 } 
@@ -89,16 +89,17 @@ if(!function_exists("sfsCheck"))
 			switch ($xm->appears) 
 		 	{
 				case 'yes': 
-					sfsLog($data);
+					sfsLog($data,$val);
 					return $deniedMessage; 	   // Is a BOT. 
 				break;
 
 				case 'no': 
+					sfsLog($data, $val, false);
 					return false;  
 				break;
 				
 				default:
-					sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_email);
+					sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_email, $val);
 					return false;  
 				break;
 			} 
@@ -114,16 +115,17 @@ if(!function_exists("sfsCheck"))
 				switch ($xm->appears) 
 		 		{
 					case 'yes': 
-						sfsLog($data);
+						sfsLog($data,$val);
 						return $deniedMessage; 	   // Is a BOT. 
 					break;
 
 					case 'no': 
+						sfsLog($data, $val, false);
 						return false;  
 					break;
 				
 					default:
-						sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_name);
+						sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_name, $val);
 						return false;  
 					break;
 			} 
@@ -134,11 +136,21 @@ if(!function_exists("sfsCheck"))
 	}
 
 	// Log Raw Data 
-	function sfsLog($data)
+	function sfsLog($data,$val, $status=true)
 	{
+		global $pref; 
+		
+		if($status == false && ($pref['sfs_debug'] != 1))
+		{
+			return; 	
+		}
+		
 		$path = (defined("e_LOG")) ? e_LOG."sfs.log" : e_PLUGIN."sfs/sfs.log";	
-		$data .= "\n\n";
-		@file_put_contents($path, $data, FILE_APPEND | LOCK_EX);	
+		
+		$save = "USERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip']."\n".$data;
+		$save .= "\n\n";
+		
+		@file_put_contents($path, $save, FILE_APPEND | LOCK_EX);	
 	}
 	
 }

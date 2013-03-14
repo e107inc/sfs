@@ -31,6 +31,7 @@ class sfs
 		if(varset($_POST['sfs_save']))
 		{
 			$pref['sfs_enabled'] = intval($_POST['sfs_enabled']);
+			$pref['sfs_debug'] = intval($_POST['sfs_debug']);
 			$ns->tablerender("Saved","Settings Saved");
 			save_prefs();
 		}
@@ -46,12 +47,18 @@ class sfs
 		
 		
 		$checked = ($pref['sfs_enabled'] == 1) ? "checked='checked'" : "";
+		$checkeddbg = ($pref['sfs_debug'] == 1) ? "checked='checked'" : "";
 		
 		$text .= "
 		<form method='post' action='".e_SELF."' >
-		<div>
-			<input type='checkbox' name='sfs_enabled' value='1' {$checked} /> Enable 
-		</div>
+		<label style='display:block'>
+			<input type='checkbox' name='sfs_enabled' value='1' {$checked} /> Enable the <em>Stop Forum Spam</em> system 
+			
+		</label>
+		<label style='display:block'>
+			<input type='checkbox' name='sfs_debug' value='1' {$checkeddbg} /> Enable logging of all results<br /><small>(those found to be spam will be logged by default)</small>. 	
+		</label>
+		
 		<div style='padding:10px'>
 			<input type='submit' class='btn btn-primary button' name='sfs_save' value='Save' />
 		</div>
