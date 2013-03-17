@@ -57,7 +57,12 @@ if(!function_exists("sfsCheck"))
 		if ($val['ip']  != "")
 		{
 			$xml->setUrl("http://www.stopforumspam.com/api?ip=" . urlencode($val['ip'] ));
-			$data = $xml->getRemoteXmlFile();
+			if(!$data = $xml->getRemoteXmlFile())
+			{
+				sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				return;
+			}
+			
 			$xm = new SimpleXMLElement($data);
 
 			switch ($xm->appears) 
@@ -83,7 +88,11 @@ if(!function_exists("sfsCheck"))
 		if ($user_email != "")
 		{
 			$xml->setUrl("http://www.stopforumspam.com/api?email=" . urlencode($user_email));
-			$data = $xml->getRemoteXmlFile();
+			if(!$data = $xml->getRemoteXmlFile())
+			{
+				sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				return;
+			}
 			$xm = new SimpleXMLElement($data);
 
 			switch ($xm->appears) 
@@ -109,7 +118,11 @@ if(!function_exists("sfsCheck"))
 		if ($user_name != "")
 		{
 			$xml->setUrl("http://www.stopforumspam.com/api?username==" . urlencode($user_name));
-			$data = $xml->getRemoteXmlFile();
+			if(!$data = $xml->getRemoteXmlFile())
+			{
+				sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				return;
+			}
 			$xm = new SimpleXMLElement($data);
 
 				switch ($xm->appears) 
