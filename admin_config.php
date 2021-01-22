@@ -1,17 +1,17 @@
 <?php
 /*
-+ ----------------------------------------------------------------------------+
-|     e107 content management system - Stop Forum Spam plugin. 
-|
-|     Copyright (C) 2008-2013 e107 Inc (e107.org)
-|     Released under the terms and conditions of the
-|     GNU General Public License (http://gnu.org).
-|
-+----------------------------------------------------------------------------+
-*/
+ * StopForumSpam (SFS)
+ *
+ * Copyright (C) 2021-2022 e107 Inc. (https://www.e107.org)
+ * Released under the terms and conditions of the
+ * GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
+ *
+ */
 
+// TODO REWRITE TO USE ADMIN UI
 
 require_once("../../class2.php");
+
 if (!getperms("P"))
 {
 	 header("location:" . e_BASE."index.php");  
