@@ -13,7 +13,8 @@
 		<link url='admin_config.php' description='Configure SFS' icon='images/icon_32.png' iconSmall='images/icon_16.png' icon128="images/icon_128.png" primary='true'>LAN_CONFIGURE</link>
 	</adminLinks>
 	<pluginPrefs>
-		<pref name="sfs_active">1</pref>
+		<pref name="sfs_enabled">1</pref>
 		<pref name="sfs_debug">0</pref>
+		<pref name="sfs_apikey"></pref>
 	</pluginPrefs>
 </e107Plugin>
