@@ -107,6 +107,31 @@ class sfs_ui extends e_admin_ui
 			{
 				e107::getMessage()->addWarning("This plugin is not yet installed. Saving and loading of preference or table data will fail."); // DO NOT TRANSLATE
 			}
+
+			$old_files = array(
+				'index.html',
+				'e_module.php',
+				'plugin.php',
+			);
+
+			foreach($old_files as $old_file)
+			{
+				if(file_exists($old_file))
+				{
+					@unlink($old_file);
+
+					if(file_exists($old_file))
+					{
+						e107::getMessage()->addDebug("Please remove the following outdated file: ".$old_file); // DO NOT TRANSLATE
+					}
+					else
+					{
+						e107::getMessage()->addSuccess("Outdated file removed: ".$old_file);
+						e107::getPlug()->clearCache()->buildAddonPrefLists();
+					}
+				}
+			}
+
 		}
 
 		
