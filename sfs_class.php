@@ -48,7 +48,7 @@ class sfs_class
 		$val['ip'] 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
 		$user_name 		= trim(varset($val['loginname']));	 
 		
-		$deniedMessage = "Sorry no bots allowed!";
+		$deniedMessage = LAN_SFS_DENIED_MESSAGE;
 			
 		// Check IP
 		if ($val['ip']  != "")

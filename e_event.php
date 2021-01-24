@@ -9,7 +9,7 @@
  */
 
 if (!defined('e107_INIT')) { exit; }
-
+e107::lan('sfs', false, true);
 require_once(e_PLUGIN."sfs/sfs_class.php");
 
 class sfs_event 
