@@ -34,7 +34,7 @@ class sfs_event
 		if(e107::getPlugPref('sfs', 'sfs_enabled'))
 	    {
 			$sfs = new sfs_class();
-			$sfs->init($data);
+			return $sfs->init($data);
 		}
 	}
 
