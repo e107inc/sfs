@@ -1,7 +1,5 @@
 # Stop Forum Spam #
 
-**THIS PLUGIN IS CURRENTLY BEING REWRITTEN FOR E107 V2. PLEASE AWAIT FURTHER UPDATES BEFORE USING THIS PLUGIN FOR NOW.**
-
 ## Features
 Prevents spambots from signing up on your e107 website by checking their IP and/or email address against the database on stopforumspam.com
 
