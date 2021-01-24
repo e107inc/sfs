@@ -22,16 +22,9 @@ class sfs_class
 	}
 	
 	public function init($data)
-	{
-		/*if($this->sfs_debug)
-		{
-			e107::getAdminLog()->addDebug(__LINE__." ".__METHOD__.": SFS is NOT activated for User ID ".$user_id);
-			e107::getAdminLog()->toFile('twofactorauth', 'TwoFactorAuth Debug Information', true);
-		}*/
-			 
+	{	 
 		$result = $this->sfsCheck($data); 
 		return $result; 
-
 	}
 
 	function sfsCheck($val = array())
@@ -55,7 +48,7 @@ class sfs_class
 		{
 			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?ip=" . urlencode($val['ip'] )))
 			{
-				$this->sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
 			}
 		
@@ -74,7 +67,7 @@ class sfs_class
 				break;
 					
 				default:
-					$this->sfsLog(date('r')." : Couldn't check stopforumspam.com against ". $val['ip'] , $val);
+					$this->sfsLog("Couldn't check stopforumspam.com against ". $val['ip'] , $val);
 					return false;  
 				break;
 			 } 
@@ -85,7 +78,7 @@ class sfs_class
 		{
 			if(!$data = $xml->getRemoteXmlFile("http://www.stopforumspam.com/api?email=" . urlencode($user_email)))
 			{
-				$this->sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
 			}
 
@@ -104,7 +97,7 @@ class sfs_class
 				break;
 				
 				default:
-					$this->sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_email, $val);
+					$this->sfsLog("Couldn't check stopforumspam.com against ".$user_email, $val);
 					return false;  
 				break;
 			} 
@@ -115,7 +108,7 @@ class sfs_class
 		{
 			if(!$data = $xml->getRemoteXmlFile("http://www.stopforumspam.com/api?username==" . urlencode($user_name)))
 			{
-				$this->sfsLog(date('r')." : Couldn't access stopforumspam.com");
+				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
 			}
 
@@ -132,31 +125,24 @@ class sfs_class
 						return false;  
 					break;
 					default:
-						$this->sfsLog(date('r')." : Couldn't check stopforumspam.com against ".$user_name, $val);
+						$this->sfsLog("Couldn't check stopforumspam.com against ".$user_name, $val);
 						return false;  
 					break;
 			} 
 		}
 	}
 
-	// TODO Rewrite sfsCheck() to use e107::getAdminLog()->addDebug() and toFile(). 
 	// Log Raw Data 
-	function sfsLog($data, $val, $status=true)
+	function sfsLog($data, $val, $status = true)
 	{
-		global $pref; 
+		$pref = e107::pref('sfs');
 		
 		if($status == false && ($pref['sfs_debug'] != 1))
 		{
 			return; 	
 		}
-		
-		$path = (defined("e_LOG")) ? e_LOG."sfs.log" : e_PLUGIN."sfs/sfs.log";	
-		
-		$save = date('r')."\nUSERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip'];
-		$save .= "\n".$data;
-		$save .= "\n\n";
-		
-		@file_put_contents($path, $save, FILE_APPEND | LOCK_EX);
-		@chmod($path,0640);	
+
+		e107::getAdminLog()->addDebug("USERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip']);
+        e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 	}
 }
