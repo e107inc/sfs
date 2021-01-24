@@ -1,9 +1,8 @@
 # Stop Forum Spam #
 
-## Features
 Prevents spambots from signing up on your e107 website by checking their IP and/or email address against the database on stopforumspam.com
 
-### Features planned for future releases: 
+## Features planned for future releases: 
 * See [Issue tracker](https://github.com/e107inc/sfs/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+planned%22+label%3A%22type%3A+enhancement%22) 
 
 ## Installation
