@@ -58,7 +58,7 @@ class sfs_class
 		 	{
 				case 'yes':
 					$this->sfsLog($data, $val);
-					return $deniedMessage;  // Is a BOT. 
+					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
 				break;
 
 				case 'no': 
@@ -87,8 +87,8 @@ class sfs_class
 			switch ($xm->appears) 
 		 	{
 				case 'yes': 
-					$this->sfsLog($data,$val);
-					return $deniedMessage; 	   // Is a BOT. 
+					$this->sfsLog($data, $val);
+					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
 				break;
 
 				case 'no': 
@@ -117,8 +117,8 @@ class sfs_class
 				switch ($xm->appears) 
 		 		{
 					case 'yes': 
-						$this->sfsLog($data,$val);
-						return $deniedMessage; 	   // Is a BOT. 
+						$this->sfsLog($data, $val);
+						return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
 					break;
 					case 'no': 
 						$this->sfsLog($data, $val, false);
@@ -142,7 +142,8 @@ class sfs_class
 			return; 	
 		}
 
-		e107::getAdminLog()->addDebug("USERNAME: ".$val['loginname']." EMAIL: ".$val['email']." IP: ".$val['ip']);
+		e107::getAdminLog()->addDebug("Username: ".$val['loginname']." E-mail: ".$val['email']." IP: ".$val['ip']);
+		e107::getAdminLog()->addDebug($data);
         e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 	}
 }
