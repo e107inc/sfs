@@ -5,16 +5,34 @@
 ## Features
 Prevents spambots from signing up on your e107 website by checking their IP and/or email address against the database on stopforumspam.com
 
+### Features planned for future releases: 
+* See [Issue tracker](https://github.com/e107inc/sfs/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+planned%22+label%3A%22type%3A+enhancement%22) 
+
 ## Installation
-You will need to create a folder called 'sfs' in your e107_plugins folder, and then place the contents of the github zip inside. 
-Then go to the plugins-manager in admin, and install "Stop Forum Spam". 
+* You can install this plugin through the "Admin Area > Plugin Manager > Find Plugins" section. 
+* You can also download this plugin manually by checking out the [releases page](https://github.com/e107inc/sfs/releases). 
+
+### Note for e107 v1 users
+* e107 v1.0.4 (or lower) is no longer supported. It is strongly recommended to update to e107 v2. 
+& In case you wish to use this plugin on your e107 v1 installation, please use [version 1.0.0](https://github.com/e107inc/sfs/releases/tag/v1.0.0) of this plugin. Any newer version of this plugin will only work on e107 v2. 
 
 ## Configuration
-In the admin area there are two preferences that can be set for this plugin. The first checkbox enables/disables the plugin. 
-When the first checkbox is unchecked, the plugin will be disabled and the signup requests will not be checked. 
+In the admin area there are two preferences that can be set for this plugin:
+1. *StopForumSpam Active*: determines whether new signups are checked against the stopforumspam.com database (default is 'on')
+2. *SFS Debug Mode*: when enabled, all user signups are logged in the logfile. By default, only the registations which are found in the stopforumspam.com database are logged. (default is 'off')
 
-By default, all signups that have been refused (ie. all spambots that have tried to sign up) will be logged in a file called sfs.log. This file is located in the plugin folder (e107_plugins/sfs)
-The second checkbox in the admin area allows for logging ALL signups (this includes all legitimate signups as well). 
+*The log file is located in your logs folder (by default 'e107_system/(hash)/logs')*
 
-## Issues and Feature requests
-In case of any issues, questions or feature requests. Please use the issue tracker here: https://github.com/e107inc/sfs/issues
+## How to get help? ##
+* First, **search the documentation** [here](#) - *documentation will be added asap*
+* Then, if you cannot find the answer to your question, please submit a new issue in the issue tracker [here](https://github.com/e107inc/sfs/issues)
+
+## Bugs &  feature requests ##
+* Bug reports and feature requests are very welcome! 
+* Use the [issue tracker](https://github.com/e107inc/sfs/issues)
+
+## Translation ##
+* In case you want to translate this plugin to your language, please [fork this Github repository](https://help.github.com/articles/fork-a-repo) and submit a [pull-request](https://help.github.com/articles/using-pull-requests).
+
+## Changelog ##
+See the **releases** section [here](https://github.com/e107inc/sfs/releases)
