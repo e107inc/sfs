@@ -20,5 +20,5 @@ define("LAN_SFS_PREFS_APIKEY_HELP", 	"This key is used to connect to the stopfor
 
 
 // Help
-define("LAN_SFS_HELP_DEBUG", 	"By default, user registrations found to be spam are logged to the log file. By enabling debug mode, ALL checks are logged, including the legitimate registrations.");
-define("LAN_SFS_HELP_APIKEY", 	"When set...");
+define("LAN_SFS_HELP_DEBUG", 	"By default, only user registrations found to be spam are logged to the log file. By enabling debug mode, ALL signups are logged, including the legitimate ones.");
+define("LAN_SFS_HELP_APIKEY", 	"When set, it is possible to report spam users to the stopforumspam.com database.");

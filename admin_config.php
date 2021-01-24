@@ -43,13 +43,13 @@ class sfs_adminArea extends e_admin_dispatcher
 		'main/edit'	=> 'main/list'				
 	);	
 	
-	protected $menuTitle = 'Stop Forum Spam';
+	protected $menuTitle = LAN_PLUGIN_SFS_NAME;
 }
 
 	
 class sfs_ui extends e_admin_ui
 {
-		protected $pluginTitle		= 'Stop Forum Spam';
+		protected $pluginTitle		= LAN_PLUGIN_SFS_NAME;
 		protected $pluginName		= 'sfs';
 	//	protected $eventName		= 'sfs-sfs'; // remove comment to enable event triggers in admin. 		
 		protected $table			= 'sfs';
