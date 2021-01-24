@@ -89,14 +89,14 @@ class sfs_ui extends e_admin_ui
 				'help'			=> LAN_SFS_PREFS_DEBUG_HELP, 
 				'writeParms'	=> array()
 			),
-			'sfs_apikey' => array(
+			/*'sfs_apikey' => array(
 				'title'			=> LAN_SFS_PREFS_APIKEY, 
 				'tab'			=> 0,
 				'type'			=> 'text', 
 				'data' 			=> 'str', 
 				'help'			=> LAN_SFS_PREFS_APIKEY_HELP, 
 				'writeParms' 	=> array()
-			),
+			),*/
 		); 
 
 	
@@ -154,10 +154,10 @@ class sfs_ui extends e_admin_ui
 			if($this->getAction() == "prefs")
 			{			
 				$text .= '<strong>'.LAN_SFS_PREFS_DEBUG.'</strong>'; 
-				$text .= '<p>'.LAN_SFS_PREFS_DEBUG_HELP.'</p>';
+				$text .= '<p>'.LAN_SFS_HELP_DEBUG.'</p>';
 
-				$text .= '<strong>'.LAN_SFS_PREFS_APIKEY.'</strong>'; 
-				$text .= '<p>'.LAN_SFS_PREFS_APIKEY_HELP.'</p>';
+				/*$text .= '<strong>'.LAN_SFS_PREFS_APIKEY.'</strong>'; 
+				$text .= '<p>'.LAN_SFS_PREFS_APIKEY_HELP.'</p>';*/
 			}
 			
 
