@@ -11,7 +11,7 @@ Prevents spambots from signing up on your e107 website by checking their usernam
 
 ### Note for e107 v1 users
 * e107 v1.0.4 (or lower) is no longer supported. It is strongly recommended to update to e107 v2. 
-& In case you wish to use this plugin on your e107 v1 installation, please use [version 1.0.0](https://github.com/e107inc/sfs/releases/tag/v1.0.0) of this plugin. Any newer version of this plugin will only work on e107 v2. 
+* In case you wish to use this plugin on your e107 v1 installation, please use [version 1.0.0](https://github.com/e107inc/sfs/releases/tag/v1.0.0) of this plugin. Any newer version of this plugin will only work on e107 v2. 
 
 ## Configuration
 In the admin area there are two preferences that can be set for this plugin:
