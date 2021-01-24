@@ -177,7 +177,7 @@ class sfs_ui extends e_admin_ui
 }
 				
 
-class twofactorauth_form_ui extends e_admin_form_ui
+class sfs_form_ui extends e_admin_form_ui
 {
 	
 
