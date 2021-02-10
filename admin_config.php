@@ -173,11 +173,12 @@ class sfs_ui extends e_admin_ui
 		// left-panel help menu area
 		public function renderHelp()
 		{
-			$text = '';
-			$caption = LAN_HELP;
 
 			if($this->getAction() == "prefs")
-			{			
+			{		
+				$text = '';
+				$caption = LAN_HELP;
+
 				$text .= '<strong>'.LAN_SFS_PREFS_DEBUG.'</strong>'; 
 				$text .= '<p>'.LAN_SFS_HELP_DEBUG.'</p>';
 
