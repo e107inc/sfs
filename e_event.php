@@ -9,7 +9,9 @@
  */
 
 if (!defined('e107_INIT')) { exit; }
+
 e107::lan('sfs', false, true);
+
 require_once(e_PLUGIN."sfs/sfs_class.php");
 
 class sfs_event 
@@ -30,7 +32,7 @@ class sfs_event
 	
 	function init_sfs($data, $eventname) 
 	{
-		// Check to see if Two Factor Authentication is active for all users
+		// Check to see if SFS is active
 		if(e107::getPlugPref('sfs', 'sfs_enabled'))
 	    {
 			$sfs = new sfs_class();
