@@ -180,7 +180,7 @@ class sfs_ui extends e_admin_ui
 				$caption = LAN_HELP;
 
 				$text .= '<strong>'.LAN_SFS_PREFS_DEBUG.'</strong>'; 
-				$text .= '<p>'.LAN_SFS_HELP_DEBUG.'</p>';
+				$text .= '<p>'.LAN_SFS_PREFS_DEBUG_HELP.'</p>';
 
 				/*$text .= '<strong>'.LAN_SFS_PREFS_APIKEY.'</strong>'; 
 				$text .= '<p>'.LAN_SFS_PREFS_APIKEY_HELP.'</p>';*/
