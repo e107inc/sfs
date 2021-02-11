@@ -160,7 +160,9 @@ class sfs_ui extends e_admin_ui
 				'help'			=> LAN_SFS_PREFS_APIKEY_HELP, 
 				'writeParms' 	=> array()
 			),*/
-		); 
+		);
+
+
 
 	
 		public function init()
@@ -197,12 +199,15 @@ class sfs_ui extends e_admin_ui
 
 		}
 
-		function report_sfs($user_id)
+		function reportPage()
 		{
+			$userID = $this->getId();
 			error_log("working?");
 			print_a("testing....");
-			print_a($user_id);
+			print_a($userID);
 			e107::getMessage()->addSuccess("Let's go!");
+
+			$this->redirect('list');
 			return;
 		}
 
@@ -280,15 +285,15 @@ class sfs_form_ui extends e_admin_form_ui
 	// Override the default Options field. 
 	function options($parms, $value, $id, $options)
 	{
-		$action = $this->getController()->getAction();
 
-		if($action == 'list')
+		if($options['mode'] == 'read')
 		{
 			$icon = e107::getParser()->toIcon('fa-flag.glyph', array('size'=>'2x'));
 
 			$text = "<div class='btn-group pull-right'>";
 			//$text .= $this->renderValue('options', $value, $attributes, $id);
-			$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
+		//	$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
+			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon."</a>";
 			$text .= "</div>";
 
 			return $text;
