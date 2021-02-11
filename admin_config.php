@@ -30,7 +30,7 @@ class sfs_adminArea extends e_admin_dispatcher
 	
 	
 	protected $adminMenu = array(
-		//'main/list'			=> array('caption'=> LAN_MANAGE, 'perm' => 'P'),
+		'main/list'			=> array('caption'=> LAN_MANAGE, 'perm' => 'P'),
 		//'main/create'		=> array('caption'=> LAN_CREATE, 'perm' => 'P'),
 
 		'main/prefs' 		=> array('caption'=> LAN_PREFS, 'perm' => 'P'),	
@@ -52,8 +52,8 @@ class sfs_ui extends e_admin_ui
 		protected $pluginTitle		= LAN_PLUGIN_SFS_NAME;
 		protected $pluginName		= 'sfs';
 	//	protected $eventName		= 'sfs-sfs'; // remove comment to enable event triggers in admin. 		
-		protected $table			= 'sfs';
-		protected $pid				= '';
+		protected $table			= 'user';
+		protected $pid				= 'user_id';
 		protected $perPage			= 10; 
 		protected $batchDelete		= false;
 		protected $batchExport      = false;
@@ -67,9 +67,72 @@ class sfs_ui extends e_admin_ui
 		
 		protected $listOrder		= '';
 	
-		protected $fields = array();		
+			
+		protected $fields = array(
+			'checkboxes' => array(  
+				'title' 		=> '',  
+				'type' 			=> null,  
+				'data' 			=> null,  
+				'width' 		=> '5%',  
+				'thclass' 		=> 'center',  
+				'forced' 		=> true,  
+				'class' 		=> 'center',  
+				'toggle' 		=> 'e-multiselect',  
+				'readParms' 	=> array(),  
+				'writeParms' 	=> array(),
+			),
+			'user_id' => array(
+				'title' 		=> LAN_ID,  
+				'type' 			=> '',  
+				'data' 			=> 'int',  
+				'width' 		=> '5%',  
+				'readonly' 		=> true,  
+				'help' 			=> '',  
+				'readParms' 	=> array(),  
+				'writeParms'	=> array(),  
+				'class' 		=> 'left',  
+				'thclass' 		=> 'left',
+			),
+			'user_name' => array( 
+				'title' 		=> LAN_NAME,  
+				'type' 			=> 'text',  
+				'noedit'		=> true,
+				'data' 			=> 'str',  
+				'width' 		=> 'auto',  
+				'readonly' 		=> true,  
+				'help' 			=> '',  
+				'readParms' 	=> array(),  
+				'writeParms' 	=> array(),  
+				'class' 		=> 'left',  
+				'thclass' 		=> 'left',
+			),
+			'user_join' => array( 
+				'title' 		=> "Join date", // TODO LAN  
+				'type' 			=> 'datestamp',  
+				'noedit'		=> true,
+				'width' 		=> 'auto',
+				'noedit'		=> true,  
+				'filter'		=> true,  
+				'help' 			=> '',  
+				'readParms' 	=> array(),  
+				'writeParms' 	=> array(),  
+				'class' 		=> 'left',  
+				'thclass' 		=> 'left',
+			),
+			'options' => array(
+				'title' 		=> LAN_OPTIONS,  
+				'type' 			=> 'method',  
+				'data' 			=> null,  
+				'width' 		=> '10%',  
+				'thclass'		=> 'center last',  
+				'class' 		=> 'center last',  
+				'forced' 		=> true,  
+				'readParms' 	=> array(),  
+				'writeParms' 	=> array(),
+			),
+		);			
 		
-		protected $fieldpref = array();
+		protected $fieldpref = array('user_id', 'user_name', 'user_join');
 		
 	//	protected $preftabs        = array('General', 'Other' );
 		protected $prefs = array(
@@ -132,6 +195,15 @@ class sfs_ui extends e_admin_ui
 				}
 			}
 
+		}
+
+		function report_sfs($user_id)
+		{
+			error_log("working?");
+			print_a("testing....");
+			print_a($user_id);
+			e107::getMessage()->addSuccess("Let's go!");
+			return;
 		}
 
 		
@@ -205,6 +277,24 @@ class sfs_ui extends e_admin_ui
 
 class sfs_form_ui extends e_admin_form_ui
 {
+	// Override the default Options field. 
+	function options($parms, $value, $id, $options)
+	{
+		$action = $this->getController()->getAction();
+
+		if($action == 'list')
+		{
+			$icon = e107::getParser()->toIcon('fa-flag.glyph', array('size'=>'2x'));
+
+			$text = "<div class='btn-group pull-right'>";
+			//$text .= $this->renderValue('options', $value, $attributes, $id);
+			$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
+			$text .= "</div>";
+
+			return $text;
+		}
+	}
+
 	
 
 }				
