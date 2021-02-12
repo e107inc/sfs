@@ -51,7 +51,7 @@ class sfs_class
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
 			}
-			error_log($data);
+			
 			$xm = new SimpleXMLElement($data);
 			
 			switch($xm->appears) 
