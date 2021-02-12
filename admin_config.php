@@ -111,6 +111,7 @@ class sfs_ui extends e_admin_ui
 			'user_join' => array( 
 				'title' 		=> "Join date", // TODO LAN  
 				'type' 			=> 'datestamp',  
+				'data'			=> 'int',
 				'noedit'		=> true,
 				'width' 		=> 'auto',
 				'noedit'		=> true,  
