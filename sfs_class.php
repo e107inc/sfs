@@ -36,22 +36,22 @@ class sfs_class
 		{
 			return false; 
 		}	
-	
+
+		$user_ip 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
 		$user_email 	= trim(varset($val['email']));
-		$val['ip'] 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
-		$user_name 		= trim(varset($val['loginname']));	 
+		$user_name 		= trim(varset($val['loginname']));	
 		
 		$deniedMessage = LAN_SFS_DENIED_MESSAGE;
-			
+
 		// Check IP
-		if ($val['ip']  != "")
+		if($user_ip != "")
 		{
-			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?ip=" . urlencode($val['ip'] )))
+			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.com/api?ip=".urlencode($user_ip)))
 			{
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
 			}
-		
+			error_log($data);
 			$xm = new SimpleXMLElement($data);
 			
 			switch($xm->appears) 
@@ -60,14 +60,12 @@ class sfs_class
 					$this->sfsLog($data, $val);
 					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
 				break;
-
 				case 'no': 
 					$this->sfsLog($data, $val , false);
 					//return false;  
 				break;
-					
 				default:
-					$this->sfsLog("Couldn't check stopforumspam.com against ". $val['ip'] , $val);
+					$this->sfsLog("Couldn't check stopforumspam.com against". $user_ip, $val);
 					//return false;  
 				break;
 			 } 
@@ -80,7 +78,7 @@ class sfs_class
 		// Check Email 
 		if($user_email != "")
 		{
-			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?email=" . urlencode($user_email)))
+			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.com/api?email=" . urlencode($user_email)))
 			{
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
@@ -94,14 +92,12 @@ class sfs_class
 					$this->sfsLog($data, $val);
 					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
 				break;
-
 				case 'no': 
 					$this->sfsLog($data, $val, false);
 					//return false;  
 				break;
-				
 				default:
-					$this->sfsLog("Couldn't check stopforumspam.com against ".$user_email, $val);
+					$this->sfsLog("Couldn't check stopforumspam.com against".$user_email, $val);
 					//return false;  
 				break;
 			} 
@@ -115,7 +111,7 @@ class sfs_class
 		// Check username  
 		if($user_name != "")
 		{
-			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?username==" . urlencode($user_name)))
+			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.org/api?username=".urlencode($user_name)))
 			{
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
