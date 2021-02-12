@@ -63,20 +63,24 @@ class sfs_class
 
 				case 'no': 
 					$this->sfsLog($data, $val , false);
-					return false;  
+					//return false;  
 				break;
 					
 				default:
 					$this->sfsLog("Couldn't check stopforumspam.com against ". $val['ip'] , $val);
-					return false;  
+					//return false;  
 				break;
 			 } 
-		  }
+		}
+		else
+		{
+			$this->sfsLog("No IP address supplied");
+		}
 	
 		// Check Email 
-		if ($user_email != "")
+		if($user_email != "")
 		{
-			if(!$data = $xml->getRemoteXmlFile("http://www.stopforumspam.com/api?email=" . urlencode($user_email)))
+			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?email=" . urlencode($user_email)))
 			{
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
@@ -84,7 +88,7 @@ class sfs_class
 
 			$xm = new SimpleXMLElement($data);
 
-			switch ($xm->appears) 
+			switch($xm->appears) 
 		 	{
 				case 'yes': 
 					$this->sfsLog($data, $val);
@@ -93,20 +97,25 @@ class sfs_class
 
 				case 'no': 
 					$this->sfsLog($data, $val, false);
-					return false;  
+					//return false;  
 				break;
 				
 				default:
 					$this->sfsLog("Couldn't check stopforumspam.com against ".$user_email, $val);
-					return false;  
+					//return false;  
 				break;
 			} 
 		}
+		else
+		{
+			$this->sfsLog("No e-mail address supplied");
+		}
+
 
 		// Check username  
 		if($user_name != "")
 		{
-			if(!$data = $xml->getRemoteXmlFile("http://www.stopforumspam.com/api?username==" . urlencode($user_name)))
+			if(!$data = $xml->getRemoteFile("http://www.stopforumspam.com/api?username==" . urlencode($user_name)))
 			{
 				$this->sfsLog("Couldn't access stopforumspam.com");
 				return;
@@ -122,14 +131,20 @@ class sfs_class
 					break;
 					case 'no': 
 						$this->sfsLog($data, $val, false);
-						return false;  
+						//return false;  
 					break;
 					default:
 						$this->sfsLog("Couldn't check stopforumspam.com against ".$user_name, $val);
-						return false;  
+						//return false;  
 					break;
 			} 
 		}
+		else
+		{
+			$this->sfsLog("No username supplied");
+		}
+
+		return false; 
 	}
 
 	// Log Raw Data 

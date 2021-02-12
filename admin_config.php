@@ -16,6 +16,8 @@ if (!getperms('P'))
 }
 
 e107::lan('sfs', true, true);
+require_once(e_PLUGIN."sfs/sfs_class.php");
+
 
 class sfs_adminArea extends e_admin_dispatcher
 {
@@ -152,14 +154,14 @@ class sfs_ui extends e_admin_ui
 				'help'			=> LAN_SFS_PREFS_DEBUG_HELP, 
 				'writeParms'	=> array()
 			),
-			/*'sfs_apikey' => array(
+			'sfs_apikey' => array(
 				'title'			=> LAN_SFS_PREFS_APIKEY, 
 				'tab'			=> 0,
 				'type'			=> 'text', 
 				'data' 			=> 'str', 
 				'help'			=> LAN_SFS_PREFS_APIKEY_HELP, 
 				'writeParms' 	=> array()
-			),*/
+			),
 		);
 
 
@@ -199,16 +201,46 @@ class sfs_ui extends e_admin_ui
 
 		}
 
+		function checkPage()
+		{
+			// Retrieve User ID
+			$userID = $this->getId();
+			// Initiate SFS class
+			$sfs = new sfs_class();
+
+			// setup data array
+			$userdata = e107::user($userID); 
+			$sfsdata = array(); 
+
+			$sfsdata['email'] 		= $userdata['user_email'];
+			$sfsdata['ip'] 			= $userdata['user_ip']; 
+			$sfsdata['loginname'] 	= $userdata['user_loginname'];
+			
+			// Run data through sfsCheck()
+			if(!$sfs->sfsCheck($sfsdata))
+			{
+				//print_a("not a spammer");
+				e107::getMessage()->addSuccess("User is not a spammer."); 
+				$this->redirect('list');
+				return;	
+			}
+			// 
+			else
+			{
+				print_a("spammer!!");
+			}
+			
+			//$this->redirect('list');
+			return;
+		}
+
 		function reportPage()
 		{
-			$userID = $this->getId();
-			error_log("working?");
-			print_a("testing....");
-			print_a($userID);
-			e107::getMessage()->addSuccess("Let's go!");
-
+			// TODO - https://www.stopforumspam.com/usage
+			e107::getMessage()->addWarning("Not functional yet."); 
 			$this->redirect('list');
-			return;
+			return;	
+
 		}
 
 		
@@ -288,12 +320,14 @@ class sfs_form_ui extends e_admin_form_ui
 
 		if($options['mode'] == 'read')
 		{
-			$icon = e107::getParser()->toIcon('fa-flag.glyph', array('size'=>'2x'));
+			$icon_check  = e107::getParser()->toIcon('fa-question.glyph', array('size'=>'2x'));
+			$icon_report = e107::getParser()->toIcon('fa-flag.glyph', array('size'=>'2x'));
 
 			$text = "<div class='btn-group pull-right'>";
 			//$text .= $this->renderValue('options', $value, $attributes, $id);
 		//	$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
-			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon."</a>";
+			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=check&id=".$id."'>".$icon_check."</a>";
+			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon_report."</a>";
 			$text .= "</div>";
 
 			return $text;
