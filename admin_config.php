@@ -221,22 +221,31 @@ class sfs_ui extends e_admin_ui
 			if(!$sfs->sfsCheck($sfsdata))
 			{
 				//print_a("not a spammer");
-				e107::getMessage()->addSuccess("User is not a spammer."); 
-				$this->redirect('list');
-				return;	
+				e107::getMessage()->addSuccess("User <strong>{$userdata['user_loginname']}</strong> is not a spambot."); // TODO LAN 
 			}
-			// 
 			else
 			{
-				print_a("spammer!!");
+				e107::getMessage()->addWarning("User <strong>{$userdata['user_loginname']}</strong> is probably a spambot."); // TODO LAN 
+
 			}
 			
-			//$this->redirect('list');
+			$this->redirect('list');
 			return;
 		}
 
 		function reportPage()
 		{
+			if(!e107::getPlugPref('sfs', 'sfs_apikey')) 
+			{
+				e107::getMessage()->addError("You need to enter your API Key in order to use this functionality!"); // TODO LAN
+				$this->redirect('list');
+				return;	
+			}
+
+			$userID = $this->getId();
+			$apiKey = e107::getPlugPref('sfs', 'sfs_apikey'); 
+
+
 			// TODO - https://www.stopforumspam.com/usage
 			e107::getMessage()->addWarning("Not functional yet."); 
 			$this->redirect('list');
@@ -283,21 +292,23 @@ class sfs_ui extends e_admin_ui
 		// left-panel help menu area
 		public function renderHelp()
 		{
+			$text = '';
+
+			if($this->getAction() == "list")
+			{		
+				$text .= 'TODO. Add more info about check and report.'; // TODO add help text
+			}
 
 			if($this->getAction() == "prefs")
 			{		
-				$text = '';
-				$caption = LAN_HELP;
-
 				$text .= '<strong>'.LAN_SFS_PREFS_DEBUG.'</strong>'; 
 				$text .= '<p>'.LAN_SFS_PREFS_DEBUG_HELP.'</p>';
 
-				/*$text .= '<strong>'.LAN_SFS_PREFS_APIKEY.'</strong>'; 
-				$text .= '<p>'.LAN_SFS_PREFS_APIKEY_HELP.'</p>';*/
+				$text .= '<strong>'.LAN_SFS_PREFS_APIKEY.'</strong>'; 
+				$text .= '<p>'.LAN_SFS_PREFS_APIKEY_HELP.'</p>';
 			}
-			
 
-			return array('caption' => $caption,'text' => $text);
+			return array('caption' => LAN_HELP, 'text' => $text);
 		}
 			
 		/*	
@@ -326,9 +337,9 @@ class sfs_form_ui extends e_admin_form_ui
 
 			$text = "<div class='btn-group pull-right'>";
 			//$text .= $this->renderValue('options', $value, $attributes, $id);
-		//	$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
+			//$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
 			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=check&id=".$id."'>".$icon_check."</a>";
-			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon_report."</a>";
+			//$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon_report."</a>";
 			$text .= "</div>";
 
 			return $text;
