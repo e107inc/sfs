@@ -21,27 +21,46 @@ class sfs_class
 		}
 	}
 	
-	public function init($data)
-	{	 
-		$result = $this->sfsCheck($data); 
-		return $result; 
+	public function init($data, $eventname)
+	{	
+		// Check if SFS is active (just making sure)
+		if(!e107::getPlugPref('sfs', 'sfs_enabled')) 
+		{
+			e107::getAdminLog()->addDebug("SFS is not active!");
+ 	    	e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+			return false; 
+		}
+
+		e107::getAdminLog()->addDebug("Initialising SFS check");
+ 	    e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+
+		if($eventname == "usersup_veri")
+		{
+			e107::getAdminLog()->addDebug("Initialising Signup Check");
+			
+			$result = $this->sfsCheck($data); 
+			
+			e107::getAdminLog()->addDebug("Result: ".$result);
+			e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+			
+			return $result;
+		}
 	}
 
 	function sfsCheck($val = array())
 	{
 		$xml = e107::getXml(); 
 
-		// Check if SFS is active (just making sure)
-		if(!e107::getPlugPref('sfs', 'sfs_enabled')) 
-		{
-			return false; 
-		}	
-
-		$user_ip 		= varset($val['ip']) ? trim($val['ip']) : USERIP;
-		$user_email 	= trim(varset($val['email']));
-		$user_name 		= trim(varset($val['loginname']));	
+		$user_ip 	= varset($val['ip']) ? trim($val['ip']) : USERIP;
+		$user_email = trim(varset($val['email']));
+		$user_name 	= trim(varset($val['loginname']));	
 		
 		$deniedMessage = LAN_SFS_DENIED_MESSAGE;
+
+		if(e107::getPlugPref('sfs', 'sfs_deniedmessage') != "") 
+		{
+			$deniedMessage = e107::getPlugPref('sfs', 'sfs_deniedmessage');
+		}
 
 		// Check IP
 		if($user_ip != "")

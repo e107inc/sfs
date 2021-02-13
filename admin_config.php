@@ -60,6 +60,7 @@ class sfs_ui extends e_admin_ui
 		protected $batchDelete		= false;
 		protected $batchExport      = false;
 		protected $batchCopy		= false;
+		protected $batchOptions     = array();
 
 	//	protected $sortField		= 'somefield_order';
 	//	protected $sortParent       = 'somefield_parent';
@@ -85,7 +86,7 @@ class sfs_ui extends e_admin_ui
 			),
 			'user_id' => array(
 				'title' 		=> LAN_ID,  
-				'type' 			=> '',  
+				'type' 			=> 'number',  
 				'data' 			=> 'int',  
 				'width' 		=> '5%',  
 				'readonly' 		=> true,  
@@ -147,6 +148,14 @@ class sfs_ui extends e_admin_ui
 				'help'			=> LAN_SFS_PREFS_ACTIVE_HELP, 
 				'writeParms'	=> array()
 			),
+			'sfs_deniedmessage' => array(
+				'title'			=> LAN_SFS_PREFS_DENIEDMESSAGE, 
+				'tab'			=> 0, 
+				'type'			=> 'text', 
+				'data' 			=> 'str', 
+				'help'			=> LAN_SFS_PREFS_DENIEDMESSAGE_HELP, 
+				'writeParms'	=> array()
+			),
 			'sfs_debug' => array(
 				'title'			=> LAN_SFS_PREFS_DEBUG, 
 				'tab'			=> 0, 
@@ -176,6 +185,7 @@ class sfs_ui extends e_admin_ui
 				e107::getMessage()->addWarning("This plugin is not yet installed. Saving and loading of preference or table data will fail."); // DO NOT TRANSLATE
 			}
 
+			// Check for old files (part of the v1 version of SFS - from release 2.0.0 onwards, these files should be removed!)
 			$old_files = array(
 				'index.html',
 				'e_module.php',
@@ -190,7 +200,7 @@ class sfs_ui extends e_admin_ui
 
 					if(file_exists($old_file))
 					{
-						e107::getMessage()->addDebug("Please remove the following outdated file: ".$old_file); // DO NOT TRANSLATE
+						e107::getMessage()->addWarning("Please remove the following outdated file: ".$old_file); // DO NOT TRANSLATE
 					}
 					else
 					{
@@ -200,12 +210,35 @@ class sfs_ui extends e_admin_ui
 				}
 			}
 
+			if($this->getAction() == "list") 
+			{
+				$this->batchOptions = array(
+					'checkusers'  => 'Check users', 
+					//'reportusers' => 'Report users',
+				); 
+			}
+
 		}
 
-		function checkPage()
+		public function handleListCheckusersBatch($arr)
 		{
-			// Retrieve User ID
-			$userID = $this->getId();
+			if(empty($arr))
+			{
+				return null;
+			}
+
+			$arr = e107::getParser()->filter($arr, 'int');
+
+			//print_a($arr);
+			foreach($arr as $key => $userID)
+			{
+				$this->checkSfs($userID);
+			}
+
+		}
+
+		public function checkSfs($userID = '')
+		{
 			// Initiate SFS class
 			$sfs = new sfs_class();
 
@@ -221,19 +254,27 @@ class sfs_ui extends e_admin_ui
 			if(!$sfs->sfsCheck($sfsdata))
 			{
 				//print_a("not a spammer");
-				e107::getMessage()->addSuccess("User <strong>{$userdata['user_loginname']}</strong> is not a spambot."); // TODO LAN 
+				e107::getMessage()->addSuccess("User <strong>{$userdata['user_loginname']}</strong> is probably not a spambot."); // TODO LAN 
 			}
 			else
 			{
 				e107::getMessage()->addWarning("User <strong>{$userdata['user_loginname']}</strong> is probably a spambot."); // TODO LAN 
 
 			}
+		}
+
+		protected function checkPage()
+		{
+			// Retrieve User ID
+			$userID = $this->getId();
 			
+			$this->checkSfs($userID);
+
 			$this->redirect('list');
 			return;
 		}
 
-		function reportPage()
+		protected function reportPage()
 		{
 			if(!e107::getPlugPref('sfs', 'sfs_apikey')) 
 			{
@@ -250,7 +291,6 @@ class sfs_ui extends e_admin_ui
 			e107::getMessage()->addWarning("Not functional yet."); 
 			$this->redirect('list');
 			return;	
-
 		}
 
 		
@@ -292,6 +332,7 @@ class sfs_ui extends e_admin_ui
 		// left-panel help menu area
 		public function renderHelp()
 		{
+			/*
 			$text = '';
 
 			if($this->getAction() == "list")
@@ -309,6 +350,7 @@ class sfs_ui extends e_admin_ui
 			}
 
 			return array('caption' => LAN_HELP, 'text' => $text);
+			*/
 		}
 			
 		/*	

@@ -16,5 +16,6 @@
 		<pref name="sfs_enabled">1</pref>
 		<pref name="sfs_debug">0</pref>
 		<pref name="sfs_apikey"></pref>
+		<pref name="sfs_deniedmessage"></pref>
 	</pluginPrefs>
 </e107Plugin>

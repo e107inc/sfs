@@ -8,4 +8,4 @@
  *
  */
 
-define("LAN_SFS_DENIED_MESSAGE", "Sorry, no bots allowed!");
+define("LAN_SFS_DENIED_MESSAGE", "Sorry, no bots allowed! Please contact the website administrator if you think this is an error.");
