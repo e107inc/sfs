@@ -13,6 +13,11 @@ define("LAN_SFS_MANAGE_JOINDATE",		"Join date");
 define("LAN_SFS_MANAGE_CHECKUSERS",		"Check users against the SFS database");
 define("LAN_SFS_MANAGE_REPORTUSERS",	"Report users to the SFS database");
 
+define("LAN_SFS_CHECK_NOBOT", 	"User [x] is probably not a spambot.");
+define("LAN_SFS_CHECK_BOT", 	"User [x] is probably a spambot.");
+
+define("LAN_SFS_NOAPIKEY", 		"You need to enter your API Key (see preferences), in order to use this functionality!");
+
 // Prefs
 define("LAN_SFS_PREFS_ACTIVE", 			"StopForumSpam Active");
 define("LAN_SFS_PREFS_ACTIVE_HELP", 	"If turned off, user registrations are NOT checked against the StopForumSpam database.");

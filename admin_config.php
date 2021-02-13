@@ -253,13 +253,13 @@ class sfs_ui extends e_admin_ui
 			// Run data through sfsCheck()
 			if(!$sfs->sfsCheck($sfsdata))
 			{
-				//print_a("not a spammer");
-				e107::getMessage()->addSuccess("User <strong>{$userdata['user_loginname']}</strong> is probably not a spambot."); // TODO LAN 
+				$message = str_replace("[x]", "<strong>{$userdata['user_loginname']}</strong>", LAN_SFS_CHECK_NOBOT);
+				e107::getMessage()->addSuccess($message);
 			}
 			else
 			{
-				e107::getMessage()->addWarning("User <strong>{$userdata['user_loginname']}</strong> is probably a spambot."); // TODO LAN 
-
+				$message = str_replace("[x]", "<strong>{$userdata['user_loginname']}</strong>", LAN_SFS_CHECK_BOT);
+				e107::getMessage()->addWarning($message); 
 			}
 		}
 
@@ -276,9 +276,9 @@ class sfs_ui extends e_admin_ui
 
 		protected function reportPage()
 		{
-			if(!e107::getPlugPref('sfs', 'sfs_apikey')) 
+			if(e107::getPlugPref('sfs', 'sfs_apikey') == "") 
 			{
-				e107::getMessage()->addError("You need to enter your API Key in order to use this functionality!"); // TODO LAN
+				e107::getMessage()->addError(LAN_SFS_NOAPIKEY); 
 				$this->redirect('list');
 				return;	
 			}
