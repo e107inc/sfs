@@ -110,7 +110,7 @@ class sfs_ui extends e_admin_ui
 				'thclass' 		=> 'left',
 			),
 			'user_join' => array( 
-				'title' 		=> "Join date", // TODO LAN  
+				'title' 		=> LAN_SFS_MANAGE_JOINDATE, 
 				'type' 			=> 'datestamp',  
 				'data'			=> 'int',
 				'noedit'		=> true,
@@ -213,8 +213,8 @@ class sfs_ui extends e_admin_ui
 			if($this->getAction() == "list") 
 			{
 				$this->batchOptions = array(
-					'checkusers'  => 'Check users', 
-					//'reportusers' => 'Report users',
+					'checkusers'  => LAN_SFS_MANAGE_CHECKUSERS, 
+					//'reportusers' => LAN_SFS_MANAGE_REPORTUSERS,
 				); 
 			}
 

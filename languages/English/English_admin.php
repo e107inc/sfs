@@ -8,12 +8,17 @@
  *
  */
 
+// Manage
+define("LAN_SFS_MANAGE_JOINDATE",		"Join date");
+define("LAN_SFS_MANAGE_CHECKUSERS",		"Check users against the SFS database");
+define("LAN_SFS_MANAGE_REPORTUSERS",	"Report users to the SFS database");
+
 // Prefs
 define("LAN_SFS_PREFS_ACTIVE", 			"StopForumSpam Active");
-define("LAN_SFS_PREFS_ACTIVE_HELP", 	"Either enables or disable StopForumSpam.");
+define("LAN_SFS_PREFS_ACTIVE_HELP", 	"If turned off, user registrations are NOT checked against the StopForumSpam database.");
 
 define("LAN_SFS_PREFS_DENIEDMESSAGE", 		"Custom denied message");
-define("LAN_SFS_PREFS_DENIEDMESSAGE_HELP", 	"The custom message that is shown when the user is found in the stopforumspam database.");
+define("LAN_SFS_PREFS_DENIEDMESSAGE_HELP", 	"The custom message that is shown when the user is found in the StopForumSpam database.");
 
 define("LAN_SFS_PREFS_DEBUG", 			"SFS Debug Mode");
 define("LAN_SFS_PREFS_DEBUG_HELP", 		"When enabled, log files are generated which can help debug issues. This also logs all user registrations, including legitimate registrations.");
