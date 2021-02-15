@@ -276,6 +276,8 @@ class sfs_ui extends e_admin_ui
 
 		protected function reportPage()
 		{
+			return; // remove later
+			/*
 			if(e107::getPlugPref('sfs', 'sfs_apikey') == "") 
 			{
 				e107::getMessage()->addError(LAN_SFS_NOAPIKEY); 
@@ -290,7 +292,7 @@ class sfs_ui extends e_admin_ui
 			// TODO - https://www.stopforumspam.com/usage
 			e107::getMessage()->addWarning("Not functional yet."); 
 			$this->redirect('list');
-			return;	
+			return;	*/
 		}
 
 		
