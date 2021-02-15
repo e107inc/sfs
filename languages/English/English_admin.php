@@ -13,6 +13,10 @@ define("LAN_SFS_MANAGE_JOINDATE",		"Join date");
 define("LAN_SFS_MANAGE_CHECKUSERS",		"Check users against the SFS database");
 define("LAN_SFS_MANAGE_REPORTUSERS",	"Report users to the SFS database");
 
+define("LAN_SFS_LIST_CHECK", 		"Check existing users");
+define("LAN_SFS_LIST_CHECK_HELP", 	"To check exsting users against the stopforumspam.com database, click on the question mark (?) icon on the right hand side. You can also select multiple users by ticking the checkboxes and using the option at the bottom of the table.");
+define("LAN_SFS_LIST_CHECK_WARNING", "Be careful with checking too many users in a short amount of time. You risk getting banned from using the stopforumspam.com database.");
+
 define("LAN_SFS_CHECK_NOBOT", 	"User [x] is probably not a spambot.");
 define("LAN_SFS_CHECK_BOT", 	"User [x] is probably a spambot.");
 

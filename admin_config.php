@@ -334,12 +334,20 @@ class sfs_ui extends e_admin_ui
 		// left-panel help menu area
 		public function renderHelp()
 		{
-			/*
+			
 			$text = '';
 
 			if($this->getAction() == "list")
 			{		
-				$text .= 'TODO. Add more info about check and report.'; // TODO add help text
+				$text .= '<strong>'.LAN_SFS_LIST_CHECK.'</strong>';
+				$text .= '<p>'.LAN_SFS_LIST_CHECK_HELP.'</p>';
+
+				$text .= '<p><i>'.LAN_SFS_LIST_CHECK_WARNING.'</i></p>';
+
+				//$text .= '</strong>'.LAN_SFS_LIST_REPORT.'</strong>';
+				//$text .= '<p>'.LAN_SFS_LIST_REPORT_HELP.'</p>';
+		
+		
 			}
 
 			if($this->getAction() == "prefs")
@@ -352,7 +360,7 @@ class sfs_ui extends e_admin_ui
 			}
 
 			return array('caption' => LAN_HELP, 'text' => $text);
-			*/
+			
 		}
 			
 		/*	
