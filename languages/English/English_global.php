@@ -10,4 +10,4 @@
 
  // plugin.xml
 define("LAN_PLUGIN_SFS_NAME", "Stop Forum Spam");
-define("LAN_PLUGIN_SFS_DIZ",  "This plugin checks the stopforumspam.com database when a new user registers."); 
+define("LAN_PLUGIN_SFS_DIZ",  "This plugin checks the stopforumspam.com database when a new user registers. It also allows to check and report existing users."); 
