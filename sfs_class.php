@@ -26,22 +26,22 @@ class sfs_class
 		// Check if SFS is active (just making sure)
 		if(!e107::getPlugPref('sfs', 'sfs_enabled')) 
 		{
-			e107::getAdminLog()->addDebug("SFS is not active!");
- 	    	e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+			e107::getLog()->addDebug("SFS is not active!");
+ 	    	e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 			return false; 
 		}
 
-		e107::getAdminLog()->addDebug("Initialising SFS check");
- 	    e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+		e107::getLog()->addDebug("Initialising SFS check");
+ 	    e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 
 		if($eventname == "usersup_veri")
 		{
-			e107::getAdminLog()->addDebug("Initialising Signup Check");
+			e107::getLog()->addDebug("Initialising Signup Check");
 			
 			$result = $this->sfsCheck($data); 
 			
-			e107::getAdminLog()->addDebug("Result: ".$result);
-			e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+			e107::getLog()->addDebug("Result: ".$result);
+			e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 			
 			return $result;
 		}
@@ -172,8 +172,8 @@ class sfs_class
 			return; 	
 		}
 
-		e107::getAdminLog()->addDebug("Username: ".$val['loginname']." E-mail: ".$val['email']." IP: ".$val['ip']);
-		e107::getAdminLog()->addDebug($data);
-        e107::getAdminLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+		e107::getLog()->addDebug("Username: ".$val['loginname']." E-mail: ".$val['email']." IP: ".$val['ip']);
+		e107::getLog()->addDebug($data);
+        e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 	}
 }
