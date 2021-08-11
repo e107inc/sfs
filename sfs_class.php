@@ -8,6 +8,14 @@
  *
  */
 
+use Resolventa\StopForumSpamApi\ResponseAnalyzer;
+use Resolventa\StopForumSpamApi\ResponseAnalyzerSettings;
+use Resolventa\StopForumSpamApi\StopForumSpamApi;
+use Resolventa\StopForumSpamApi\Exception\StopForumSpamApiException;
+
+include 'vendor/autoload.php';
+
+
 class sfs_class
 {
 	public $sfs_debug = false;
@@ -47,123 +55,52 @@ class sfs_class
 		}
 	}
 
-	function sfsCheck($val = array())
+
+	function sfsCheck($data = array())
 	{
-		$xml = e107::getXml(); 
+		$stopForumSpamApi = new StopForumSpamApi();
 
-		$user_ip 	= varset($val['ip']) ? trim($val['ip']) : USERIP;
-		$user_email = trim(varset($val['email']));
-		$user_name 	= trim(varset($val['loginname']));	
-		
-		$deniedMessage = LAN_SFS_DENIED_MESSAGE;
+		$ip 		= varset($data['ip']) ? trim($data['ip']) : USERIP;
+		$email 		= trim(varset($data['email']));
+		$username 	= trim(varset($data['loginname']));
 
-		if(e107::getPlugPref('sfs', 'sfs_deniedmessage') != "") 
+		$stopForumSpamApi
+		    ->checkEmail($email)
+		    ->checkIp($ip)
+		    ->checkUsername($username);
+
+		$response = $stopForumSpamApi->getCheckResponse();
+
+		$analyzer = new ResponseAnalyzer(new ResponseAnalyzerSettings());
+
+		try 
 		{
-			$deniedMessage = e107::getPlugPref('sfs', 'sfs_deniedmessage');
+		    if($analyzer->isSpammerDetected($response)) 
+		    {
+		    	$this->sfsLog($data);
+		       
+		    	$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_BOT);
+		       	e107::getMessage()->addWarning($message); 
+		    }
+		    else 
+		    {
+		    	$this->sfsLog($data, $val , false);
+
+		        $message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_NOBOT);
+				e107::getMessage()->addSuccess($message); 
+		    }
+		} 
+		catch (StopForumSpamApiException $e) 
+		{
+		    $message = 'Bad response: '.  $e->getMessage();
+		    e107::getMessage()->addError($message);
+		    exit();
 		}
 
-		// Check IP
-		if($user_ip != "")
-		{
-			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.com/api?ip=".urlencode($user_ip)))
-			{
-				$this->sfsLog("Couldn't access stopforumspam.com");
-				return;
-			}
-			
-			$xm = new SimpleXMLElement($data);
-			
-			switch($xm->appears) 
-		 	{
-				case 'yes':
-					$this->sfsLog($data, $val);
-					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
-				break;
-				case 'no': 
-					$this->sfsLog($data, $val , false);
-					//return false;  
-				break;
-				default:
-					$this->sfsLog("Couldn't check stopforumspam.com against". $user_ip, $val);
-					//return false;  
-				break;
-			 } 
-		}
-		else
-		{
-			$this->sfsLog("No IP address supplied");
-		}
-	
-		// Check Email 
-		if($user_email != "")
-		{
-			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.com/api?email=" . urlencode($user_email)))
-			{
-				$this->sfsLog("Couldn't access stopforumspam.com");
-				return;
-			}
-
-			$xm = new SimpleXMLElement($data);
-
-			switch($xm->appears) 
-		 	{
-				case 'yes': 
-					$this->sfsLog($data, $val);
-					return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
-				break;
-				case 'no': 
-					$this->sfsLog($data, $val, false);
-					//return false;  
-				break;
-				default:
-					$this->sfsLog("Couldn't check stopforumspam.com against".$user_email, $val);
-					//return false;  
-				break;
-			} 
-		}
-		else
-		{
-			$this->sfsLog("No e-mail address supplied");
-		}
-
-
-		// Check username  
-		if($user_name != "")
-		{
-			if(!$data = $xml->getRemoteFile("http://api.stopforumspam.org/api?username=".urlencode($user_name)))
-			{
-				$this->sfsLog("Couldn't access stopforumspam.com");
-				return;
-			}
-
-			$xm = new SimpleXMLElement($data);
-
-				switch ($xm->appears) 
-		 		{
-					case 'yes': 
-						$this->sfsLog($data, $val);
-						return $deniedMessage; // Appears in the stopforumspam.com database, refuse signup.  
-					break;
-					case 'no': 
-						$this->sfsLog($data, $val, false);
-						//return false;  
-					break;
-					default:
-						$this->sfsLog("Couldn't check stopforumspam.com against ".$user_name, $val);
-						//return false;  
-					break;
-			} 
-		}
-		else
-		{
-			$this->sfsLog("No username supplied");
-		}
-
-		return false; 
 	}
 
 	// Log Raw Data 
-	function sfsLog($data, $val, $status = true)
+	function sfsLog($data, $val = '', $status = true)
 	{
 		$pref = e107::pref('sfs');
 		

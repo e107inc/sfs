@@ -1,0 +1,5 @@
+{
+    "require": {
+        "resolventa/stopforumspam-php-api": "1.0.1"
+    }
+}

@@ -21,6 +21,7 @@ class sfs_event
 	{
 		$event = array();
 
+		// Use "usersup_veri" to catch spambots before data is entered into database
 		$event[] = array(
 			'name'		=> "usersup_veri", 
 			'function'	=> "init_sfs",

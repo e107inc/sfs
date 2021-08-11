@@ -250,17 +250,8 @@ class sfs_ui extends e_admin_ui
 			$sfsdata['ip'] 			= $userdata['user_ip']; 
 			$sfsdata['loginname'] 	= $userdata['user_loginname'];
 			
-			// Run data through sfsCheck()
-			if(!$sfs->sfsCheck($sfsdata))
-			{
-				$message = str_replace("[x]", "<strong>{$userdata['user_loginname']}</strong>", LAN_SFS_CHECK_NOBOT);
-				e107::getMessage()->addSuccess($message);
-			}
-			else
-			{
-				$message = str_replace("[x]", "<strong>{$userdata['user_loginname']}</strong>", LAN_SFS_CHECK_BOT);
-				e107::getMessage()->addWarning($message); 
-			}
+			$sfs->sfsCheck($sfsdata); 
+			return; 
 		}
 
 		protected function checkPage()

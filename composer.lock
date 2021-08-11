@@ -1,0 +1,70 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d25c670977e62d8ec88fdc78b7e6b161",
+    "packages": [
+        {
+            "name": "resolventa/stopforumspam-php-api",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ResolventaGroup/StopForumSpam-PHP-API.git",
+                "reference": "a542a1c01c465772f43069360f1811d4af024143"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ResolventaGroup/StopForumSpam-PHP-API/zipball/a542a1c01c465772f43069360f1811d4af024143",
+                "reference": "a542a1c01c465772f43069360f1811d4af024143",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.8",
+                "phpunit/phpunit": "7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Resolventa\\StopForumSpamApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Pankin",
+                    "email": "dpankin@gmail.com"
+                }
+            ],
+            "description": "PHP API for StopForumSpam service. See https://www.stopforumspam.com for details.",
+            "keywords": [
+                "api",
+                "php",
+                "stopforumspam"
+            ],
+            "support": {
+                "issues": "https://github.com/ResolventaGroup/StopForumSpam-PHP-API/issues",
+                "source": "https://github.com/ResolventaGroup/StopForumSpam-PHP-API/tree/master"
+            },
+            "time": "2018-12-21T09:43:19+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}
