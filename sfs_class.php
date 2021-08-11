@@ -15,6 +15,7 @@ use Resolventa\StopForumSpamApi\Exception\StopForumSpamApiException;
 
 include 'vendor/autoload.php';
 
+e107::lan('sfs', true, true);
 
 class sfs_class
 {
@@ -46,24 +47,33 @@ class sfs_class
 		{
 			e107::getLog()->addDebug("Initialising Signup Check");
 			
-			$result = $this->sfsCheck($data); 
-			
-			e107::getLog()->addDebug("Result: ".$result);
-			e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
+			// Run check 
+			$result = $this->sfsCheck($data, 'signup'); 
 			
 			return $result;
 		}
 	}
 
 
-	function sfsCheck($data = array())
+	function sfsCheck($data = array(), $event = '')
 	{
 		$stopForumSpamApi = new StopForumSpamApi();
 
+		// Set up basic data
 		$ip 		= varset($data['ip']) ? trim($data['ip']) : USERIP;
+		$data['ip'] = $ip; 
 		$email 		= trim(varset($data['email']));
 		$username 	= trim(varset($data['loginname']));
 
+		// Set up (custom) denied message
+		$deniedMessage = LAN_SFS_DENIED_MESSAGE;
+
+		if(e107::getPlugPref('sfs', 'sfs_deniedmessage') != "") 
+		{
+			$deniedMessage = e107::getPlugPref('sfs', 'sfs_deniedmessage');
+		}
+
+		// Initialize SFS API check
 		$stopForumSpamApi
 		    ->checkEmail($email)
 		    ->checkIp($ip)
@@ -78,16 +88,31 @@ class sfs_class
 		    if($analyzer->isSpammerDetected($response)) 
 		    {
 		    	$this->sfsLog($data, $response);
-		       
-		    	$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_BOT);
-		       	e107::getMessage()->addWarning($message); 
+		       	
+		       	// User is signing up and appears to be a bot, so display denied message
+		       	if($event == "signup")
+		       	{
+		       		return $deniedMessage;
+		       	}
+		       	// It's an admin check
+		       	else
+		       	{
+		       		$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_BOT);
+		       		e107::getMessage()->addWarning($message);
+		       	}
+
+ 
 		    }
 		    else 
 		    {
 		    	$this->sfsLog($data, $response, false);
 
-		        $message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_NOBOT);
-				e107::getMessage()->addSuccess($message); 
+		    	// Admin check 
+		        if(empty($event))
+		        {
+		        	$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_NOBOT);
+					e107::getMessage()->addSuccess($message); 
+				}
 		    }
 		} 
 		catch (StopForumSpamApiException $e) 
@@ -110,9 +135,19 @@ class sfs_class
 
 		$response = json_encode($response); 
 
+
+		// Remove passwords from logging 
+		if($data['password1'])
+		{
+			unset($data['password1']); 
+		}
+		if($data['password2'])
+		{
+			unset($data['password2']); 
+		}
+
 		e107::getLog()->addArray($data, null, E_MESSAGE_DEBUG); 
 		e107::getLog()->addArray($response, null, E_MESSAGE_DEBUG); 
-		
         e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 	}
 }
