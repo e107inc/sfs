@@ -87,10 +87,10 @@ class sfs_class
 		$settings = new ResponseAnalyzerSettings();
 
 		// Retrieve analyzer settings from preferences
-		$MinSpamFlagsCount 			= e107::getPlugPref('sfs', 'sfs_msfc'); 
-		$MinFlagAppearanceFrequency = e107::getPlugPref('sfs', 'sfs_mfaf'); 
-		$FlagLastSeenDaysAgo		= e107::getPlugPref('sfs', 'sfs_flsda'); 
-		$ConfidenceThreshold		= e107::getPlugPref('sfs', 'sfs_ct');
+		$MinSpamFlagsCount 			= e107::getPlugPref('sfs', 'sfs_msfc', 1); 
+		$MinFlagAppearanceFrequency = e107::getPlugPref('sfs', 'sfs_mfaf', 5); 
+		$FlagLastSeenDaysAgo		= e107::getPlugPref('sfs', 'sfs_flsda', 7); 
+		$ConfidenceThreshold		= e107::getPlugPref('sfs', 'sfs_ct', 90);
 
 		// Update settings
 		$settings->setMinSpamFlagsCount($MinSpamFlagsCount);
