@@ -55,12 +55,13 @@ class sfs_class
 	}
 
 
-	function sfsCheck($data = array(), $event = '')
+	public function sfsCheck($data = array(), $event = '')
 	{
 		$stopForumSpamApi = new StopForumSpamApi();
 
 		// Set up basic data
 		$ip 		= varset($data['ip']) ? trim($data['ip']) : USERIP;
+		$ip 		= e107::getIPHandler()->ipDecode($ip); 
 		$data['ip'] = $ip; 
 		$email 		= trim(varset($data['email']));
 		$username 	= trim(varset($data['loginname']));
@@ -118,8 +119,6 @@ class sfs_class
 		       		$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_BOT);
 		       		e107::getMessage()->addWarning($message);
 		       	}
-
- 
 		    }
 		    else 
 		    {
@@ -141,8 +140,37 @@ class sfs_class
 		}
 	}
 
+	// Report user
+	public function reportUser($data = array())
+	{
+
+		$username 	= $data['user_loginname'];
+		$ip			= e107::getIPHandler()->ipDecode($data['user_ip']); 
+		$email 		= $data['user_email'];
+		$evidence 	= '';
+
+		$apiKey = e107::getPlugPref('sfs', 'sfs_apikey'); 
+
+		$stopForumSpamApi = new StopForumSpamApi($apiKey);
+
+		error_log("going to report now");
+		// Interpret response results
+		try 
+		{
+		    $result = $stopForumSpamApi->submitSpamReport($username, $ip, $email, $evidence);
+		    $message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_USER_REPORTED);
+		    e107::getMessage()->addSuccess($message);
+		}
+		catch(Exception $e) 
+		{
+		    $message = 'Bad response: '.  $e->getMessage();
+		    e107::getMessage()->addError($message);
+		}		
+
+	}
+
 	// Log Raw Data 
-	function sfsLog($data, $response, $status = true)
+	public function sfsLog($data, $response, $status = true)
 	{
 		$pref = e107::pref('sfs');
 		

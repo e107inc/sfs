@@ -244,7 +244,7 @@ class sfs_ui extends e_admin_ui
 			{
 				$this->batchOptions = array(
 					'checkusers'  => LAN_SFS_MANAGE_CHECKUSERS, 
-					//'reportusers' => LAN_SFS_MANAGE_REPORTUSERS,
+					'reportusers' => LAN_SFS_MANAGE_REPORTUSERS,
 				); 
 			}
 
@@ -264,10 +264,48 @@ class sfs_ui extends e_admin_ui
 			{
 				$this->checkSfs($userID);
 			}
+		}
+
+		public function handleListReportusersBatch($arr)
+		{
+			if(empty($arr))
+			{
+				return null;
+			}
+
+			$arr = e107::getParser()->filter($arr, 'int');
+
+			//print_a($arr);
+			foreach($arr as $key => $userID)
+			{
+				$this->reportUser($userID);
+			}
 
 		}
 
-		public function checkSfs($userID = '')
+		protected function checkPage()
+		{
+			// Retrieve User ID
+			$userID = $this->getId();
+			
+			$this->checkSfs($userID);
+
+			$this->redirect('list');
+			return;
+		}
+
+		protected function reportPage()
+		{
+			// Retrieve User ID
+			$userID = $this->getId();
+			
+			$this->reportUser($userID);
+
+			$this->redirect('list');
+			return;
+		}
+
+		public function checkSfs($userID)
 		{
 			// Initiate SFS class
 			$sfs = new sfs_class();
@@ -284,21 +322,8 @@ class sfs_ui extends e_admin_ui
 			return; 
 		}
 
-		protected function checkPage()
+		protected function reportUser($userID)
 		{
-			// Retrieve User ID
-			$userID = $this->getId();
-			
-			$this->checkSfs($userID);
-
-			$this->redirect('list');
-			return;
-		}
-
-		protected function reportPage()
-		{
-			return; // remove later
-			/*
 			if(e107::getPlugPref('sfs', 'sfs_apikey') == "") 
 			{
 				e107::getMessage()->addError(LAN_SFS_NOAPIKEY); 
@@ -306,14 +331,15 @@ class sfs_ui extends e_admin_ui
 				return;	
 			}
 
-			$userID = $this->getId();
-			$apiKey = e107::getPlugPref('sfs', 'sfs_apikey'); 
+			// Initiate SFS class
+			$sfs = new sfs_class();
 
+			$userdata = e107::user($userID); 
+			
+			$sfs->reportUser($userdata);
 
-			// TODO - https://www.stopforumspam.com/usage
-			e107::getMessage()->addWarning("Not functional yet."); 
 			$this->redirect('list');
-			return;	*/
+			return;
 		}
 
 		
@@ -412,7 +438,7 @@ class sfs_form_ui extends e_admin_form_ui
 			//$text .= $this->renderValue('options', $value, $attributes, $id);
 			//$text .= $this->admin_button('report_sfs['.$id.']', $id, 'default', $icon);
 			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=check&id=".$id."'>".$icon_check."</a>";
-			//$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon_report."</a>";
+			$text .= "<a class='btn btn-default' href='admin_config.php?mode=main&action=report&id=".$id."'>".$icon_report."</a>";
 			$text .= "</div>";
 
 			return $text;
