@@ -79,10 +79,28 @@ class sfs_class
 		    ->checkIp($ip)
 		    ->checkUsername($username);
 
+		// Get response
 		$response = $stopForumSpamApi->getCheckResponse();
 
-		$analyzer = new ResponseAnalyzer(new ResponseAnalyzerSettings());
+		// Create analyzer settings with default values
+		$settings = new ResponseAnalyzerSettings();
 
+		// Retrieve analyzer settings from preferences
+		$MinSpamFlagsCount 			= e107::getPlugPref('sfs', 'sfs_msfc'); 
+		$MinFlagAppearanceFrequency = e107::getPlugPref('sfs', 'sfs_mfaf'); 
+		$FlagLastSeenDaysAgo		= e107::getPlugPref('sfs', 'sfs_flsda'); 
+		$ConfidenceThreshold		= e107::getPlugPref('sfs', 'sfs_ct');
+
+		// Update settings
+		$settings->setMinSpamFlagsCount($MinSpamFlagsCount);
+		$settings->setMinFlagAppearanceFrequency($MinFlagAppearanceFrequency);
+		$settings->setFlagLastSeenDaysAgo($FlagLastSeenDaysAgo);
+		$settings->setConfidenceThreshold($ConfidenceThreshold);
+
+		// Analyze response
+		$analyzer = new ResponseAnalyzer($settings);
+
+		// Interpret response results
 		try 
 		{
 		    if($analyzer->isSpammerDetected($response)) 

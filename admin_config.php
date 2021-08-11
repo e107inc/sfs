@@ -172,11 +172,41 @@ class sfs_ui extends e_admin_ui
 				'help'			=> LAN_SFS_PREFS_APIKEY_HELP, 
 				'writeParms' 	=> array()
 			),
+			'sfs_msfc' => array(
+				'title'			=> LAN_SFS_PREFS_MSFC, 
+				'tab'			=> 0,
+				'type'			=> 'number', 
+				'data' 			=> 'int', 
+				'help'			=> LAN_SFS_PREFS_MSFC_HELP, 
+				'writeParms' 	=> array()
+			),
+			'sfs_mfaf' => array(
+				'title'			=> LAN_SFS_PREFS_MFAF, 
+				'tab'			=> 0,
+				'type'			=> 'number', 
+				'data' 			=> 'int', 
+				'help'			=> LAN_SFS_PREFS_MFAF_HELP, 
+				'writeParms' 	=> array()
+			),
+			'sfs_flsda' => array(
+				'title'			=> LAN_SFS_PREFS_FLSDA, 
+				'tab'			=> 0,
+				'type'			=> 'number', 
+				'data' 			=> 'int', 
+				'help'			=> LAN_SFS_PREFS_FLSDA_HELP, 
+				'writeParms' 	=> array()
+			),
+			'sfs_ct' => array(
+				'title'			=> LAN_SFS_PREFS_CT, 
+				'tab'			=> 0,
+				'type'			=> 'number', 
+				'data' 			=> 'int', 
+				'help'			=> LAN_SFS_PREFS_CT_HELP, 
+				'writeParms' 	=> array()
+			),
 		);
 
 
-
-	
 		public function init()
 		{
 			// This code may be removed once plugin development is complete. 
