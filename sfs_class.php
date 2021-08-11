@@ -77,14 +77,14 @@ class sfs_class
 		{
 		    if($analyzer->isSpammerDetected($response)) 
 		    {
-		    	$this->sfsLog($data);
+		    	$this->sfsLog($data, $response);
 		       
 		    	$message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_BOT);
 		       	e107::getMessage()->addWarning($message); 
 		    }
 		    else 
 		    {
-		    	$this->sfsLog($data, $val , false);
+		    	$this->sfsLog($data, $response, false);
 
 		        $message = str_replace("[x]", "<strong>{$username}</strong>", LAN_SFS_CHECK_NOBOT);
 				e107::getMessage()->addSuccess($message); 
@@ -96,11 +96,10 @@ class sfs_class
 		    e107::getMessage()->addError($message);
 		    exit();
 		}
-
 	}
 
 	// Log Raw Data 
-	function sfsLog($data, $val = '', $status = true)
+	function sfsLog($data, $response, $status = true)
 	{
 		$pref = e107::pref('sfs');
 		
@@ -109,8 +108,11 @@ class sfs_class
 			return; 	
 		}
 
-		e107::getLog()->addDebug("Username: ".$val['loginname']." E-mail: ".$val['email']." IP: ".$val['ip']);
-		e107::getLog()->addDebug($data);
+		$response = json_encode($response); 
+
+		e107::getLog()->addArray($data, null, E_MESSAGE_DEBUG); 
+		e107::getLog()->addArray($response, null, E_MESSAGE_DEBUG); 
+		
         e107::getLog()->toFile('sfs', 'StopForumSpam Debug Information', true);
 	}
 }
