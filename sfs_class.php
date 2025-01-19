@@ -153,7 +153,7 @@ class sfs_class
 
 		$stopForumSpamApi = new StopForumSpamApi($apiKey);
 
-		error_log("going to report now");
+		//error_log("going to report now");
 		// Interpret response results
 		try 
 		{
